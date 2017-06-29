@@ -3,7 +3,7 @@
 
 # In[49]:
 
-get_ipython().system(u'pip install pyslet')
+install pyslet
 
 
 # In[50]:
@@ -13,7 +13,7 @@ import time
 
 # In[51]:
 
-get_ipython().system(u'pip install tweepy')
+install tweepy
 
 
 # In[52]:
