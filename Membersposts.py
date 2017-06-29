@@ -3,8 +3,8 @@
 
 # In[10]:
 
-get_ipython().system(u'pip install flask')
-get_ipython().system(u'pip install pyslet')
+install flask
+install pyslet
 
 
 # In[11]:
