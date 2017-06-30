@@ -1,1 +1,1 @@
-bot python Membersposts.py
+bot: python Membersposts.py
