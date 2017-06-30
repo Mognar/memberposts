@@ -17,8 +17,6 @@ import time
 
 # In[13]:
 
-get_ipython().system(u'pip install tweepy')
-
 
 # In[14]:
 
