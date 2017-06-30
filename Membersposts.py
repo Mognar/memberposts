@@ -6,8 +6,8 @@
 
 # In[11]:
 
-from flask import Flask
-app = Flask(__name__)
+#from flask import Flask
+#app = Flask(__name__)
 
 
 # In[12]:
@@ -54,7 +54,7 @@ import pyslet.odata2.core as core
 # In[ ]:
 
 class ReplyToTweet(StreamListener):
-    @app.route("/")
+    #@app.route("/")
     def on_data(self, data):
         print data
         tweet = json.loads(data.strip())
@@ -171,7 +171,7 @@ if __name__ == '__main__':
     streamListener = ReplyToTweet()
     twitterStream = Stream(auth, streamListener)
     twitterStream.userstream(_with='user')
-    app.run()
+    #app.run()
 
 
 # 
