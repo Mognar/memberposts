@@ -3,9 +3,6 @@
 
 # In[10]:
 
-install flask
-install pyslet
-
 
 # In[11]:
 
