@@ -1,1 +1,1 @@
-web python Membersposts.py
+web python Membersposts.py ${PORT}
