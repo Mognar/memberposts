@@ -1,1 +1,1 @@
-web: python Membersposts.py ${PORT}
+bot: python Membersposts.py ${PORT}
