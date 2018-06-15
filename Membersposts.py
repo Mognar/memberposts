@@ -130,6 +130,32 @@ class ReplyToTweet(StreamListener):
                         api.update_status(status=replyText, in_reply_to_status_id = tweetId)
                     except tweepy.TweepError as e:
                         pass
+                    
+            elif ("#committees" in tweetText) and (not "#govposts" in tweetText):
+                url1='{}/odata/Person?$filter=endswith(PersonFamilyName,%27{}%27)%20and%20startswith(PersonGivenName,%27{}%27)'.format(stub,tr2,tr1)
+                r=requests.get(url1)
+                r1=r.json()
+                r2=r1['value'][0]['LocalId']
+                url2='https://api.parliament.uk/odata/Person(%27{}%27)/PersonHasFormalBodyMembership?$expand=FormalBodyMembershipHasFormalBody'.format(r2)
+                r3=requests.get(url2)
+                r4=r3.json()
+                for i in sorted(r4['value'], key=lambda x : x['FormalBodyMembershipStartDate'], reverse=True):  
+                    try:
+                        d = datetime.strptime(i['FormalBodyMembershipStartDate'], "%Y-%m-%dT%H:%M:%SZ")
+                        datum = d.strftime("%d/%m/%Y")
+                        tw = i['FormalBodyMembershipHasFormalBody']['FormalBodyName'] + ", started:" + datum
+
+                    except TypeError:
+                        pass
+
+                                    #print('------')
+                                    #api.update_status(repl + " " + tw + " " + tim)
+                    replyText = str("@"+screenName +" "+ tr1 +" " + tr2 +": " + tw)
+                    print replyText
+                    try:
+                        api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+                    except tweepy.TweepError as e:
+                        pass
             else:
                 #tv = n[z]['DateOfWrit'].value
                 #tw = str(tv)
