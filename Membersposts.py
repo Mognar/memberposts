@@ -105,42 +105,42 @@ class ReplyToTweet(StreamListener):
         
 
         
-        if ("#govposts" in tweetText) and (not "#committees" in tweetText):
-            r=requests.get(url1)
-            r1=r.json()
-            r2=r1['value'][0]['LocalId']
-            url1='{}/odata/Person?$filter=endswith(PersonFamilyName,%27{}%27)%20and%20startswith(PersonGivenName,%27{}%27)'.format(stub,tr2,tr1)
-            url2='https://api.parliament.uk/odata/Person(%27{}%27)/PersonHasIncumbency?$expand=IncumbencyHasPosition'.format(r2)
-            r3=requests.get(url2)
-            r4=r3.json()
-            for i in r4['value']:
-                try:
-                    d = datetime.strptime(i['IncumbencyStartDate'], "%Y-%m-%dT%H:%M:%SZ")
-                    datum = d.strftime("%d/%m/%Y")
-                    tw = i['IncumbencyHasPosition']['PositionName'] + ", started:" + datum
+            if ("#govposts" in tweetText) and (not "#committees" in tweetText):
+                r=requests.get(url1)
+                r1=r.json()
+                r2=r1['value'][0]['LocalId']
+                url1='{}/odata/Person?$filter=endswith(PersonFamilyName,%27{}%27)%20and%20startswith(PersonGivenName,%27{}%27)'.format(stub,tr2,tr1)
+                url2='https://api.parliament.uk/odata/Person(%27{}%27)/PersonHasIncumbency?$expand=IncumbencyHasPosition'.format(r2)
+                r3=requests.get(url2)
+                r4=r3.json()
+                for i in r4['value']:
+                    try:
+                        d = datetime.strptime(i['IncumbencyStartDate'], "%Y-%m-%dT%H:%M:%SZ")
+                        datum = d.strftime("%d/%m/%Y")
+                        tw = i['IncumbencyHasPosition']['PositionName'] + ", started:" + datum
 
-                except TypeError:
-                    pass
+                    except TypeError:
+                        pass
 
-                                #print('------')
-                                #api.update_status(repl + " " + tw + " " + tim)
-                replyText = str("@"+screenName + " " + tw)
+                                    #print('------')
+                                    #api.update_status(repl + " " + tw + " " + tim)
+                        replyText = str("@"+screenName + " " + tw)
+                        print replyText
+                        try:
+                            api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+                        except tweepy.TweepError as e:
+                            pass
+            else:
+                #tv = n[z]['DateOfWrit'].value
+                #tw = str(tv)
+                replyText = str("@"+screenName + " I'll need a hashtag to tell you more about " + tr1 + " #committees or #govposts")
                 print replyText
                 try:
                     api.update_status(status=replyText, in_reply_to_status_id = tweetId)
                 except tweepy.TweepError as e:
                     pass
-        else:
-            #tv = n[z]['DateOfWrit'].value
-            #tw = str(tv)
-            replyText = str("@"+screenName + " I'll need a hashtag to tell you more about " + tr1 + " #committees or #govposts")
-            print replyText
-            try:
-                api.update_status(status=replyText, in_reply_to_status_id = tweetId)
-            except tweepy.TweepError as e:
-                pass
-        #api.update_status(repl + " " + tw)
-        #print(repl + " " + tw)
+            #api.update_status(repl + " " + tw)
+            #print(repl + " " + tw)
 
 if __name__ == '__main__':
     streamListener = ReplyToTweet()
