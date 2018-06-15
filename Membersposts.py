@@ -113,7 +113,7 @@ class ReplyToTweet(StreamListener):
                 url2='https://api.parliament.uk/odata/Person(%27{}%27)/PersonHasIncumbency?$expand=IncumbencyHasPosition'.format(r2)
                 r3=requests.get(url2)
                 r4=r3.json()
-                for i in r4['value']:
+                for i in sorted(r4['value'], key=lambda x : x['IncumbencyStartDate'], reverse=True):
                     try:
                         d = datetime.strptime(i['IncumbencyStartDate'], "%Y-%m-%dT%H:%M:%SZ")
                         datum = d.strftime("%d/%m/%Y")
