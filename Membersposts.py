@@ -124,7 +124,7 @@ class ReplyToTweet(StreamListener):
 
                                     #print('------')
                                     #api.update_status(repl + " " + tw + " " + tim)
-                    replyText = str("@"+screenName + " " + tw)
+                    replyText = str("@"+screenName +" "+ tr1 +" " + tr2 +": " + tw)
                     print replyText
                     try:
                         api.update_status(status=replyText, in_reply_to_status_id = tweetId)
@@ -133,7 +133,7 @@ class ReplyToTweet(StreamListener):
             else:
                 #tv = n[z]['DateOfWrit'].value
                 #tw = str(tv)
-                replyText = str("@"+screenName + " I'll need a hashtag to tell you more about " + tr1 + " #committees or #govposts")
+                replyText = str("@"+screenName + " I'll need a hashtag to tell you more about " + tr1 +" " + tr2 + " #govposts")
                 print replyText
                 try:
                     api.update_status(status=replyText, in_reply_to_status_id = tweetId)
