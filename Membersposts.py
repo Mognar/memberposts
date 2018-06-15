@@ -21,6 +21,8 @@ import time,os
 # In[14]:
 
 import json
+import requests
+from datetime import datetime
 import tweepy
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -37,13 +39,13 @@ api = tweepy.API(auth)
 
 # In[15]:
 
-from pyslet.odata2.client import Client
-c = Client("http://data.parliament.uk/membersdataplatform/open/OData.svc")
+#from pyslet.odata2.client import Client
+#c = Client("http://data.parliament.uk/membersdataplatform/open/OData.svc")
 
 
 # In[16]:
 
-import pyslet.odata2.core as core
+#import pyslet.odata2.core as core
 
 
 # In[ ]:
@@ -100,56 +102,28 @@ class ReplyToTweet(StreamListener):
             
             
             
-            m=c.feeds['Members'].OpenCollection()
-            ordering=core.CommonExpression.OrderByFromString("NameDisplayAs Desc")
-            m.set_orderby(ordering)
-
-            odfilter = core.CommonExpression.from_str("startswith('"+tr1+"',Forename) and startswith('"+tr2+"',Surname)")
-            m.set_filter(odfilter)
-
-            for p in m.itervalues():
-                print(p.key(), p['NameDisplayAs'].value)
-                mem = str(p['NameDisplayAs'].value)  
-                print mem
-                z = int(p.key())
-                print z
-
-                n=c.feeds['Members'].OpenCollection()
-                if ("#govposts" in tweetText) and (not "#committees" in tweetText):
-                    mcm=n[z]['MemberGovernmentPosts'].OpenCollection()
-                    for k in mcm.keys():
-                    #Get the Government Post details
-                        with mcm[k]['GovernmentPost'].OpenCollection() as mcmc:
-                            for k2,v2 in mcmc[mcmc.keys()[0]].data_items():
-                                if k2=='Name':
-                                #if k2=='HansardName' :
-                                    tw = str(v2.value)
-                                    print tw
-                                #print(v2.value)
+            stub='https://api.parliament.uk'.strip('/')
+            url1='{}/odata/Person?$filter=endswith(PersonFamilyName,%27{}%27)%20and%20startswith(PersonGivenName,%27{}%27)'.format(stub,tr2,tr1)
+            
+            r=requests.get(url1)
+            r1=r.json()
+            r2=r1['value'][0]['LocalId']
+            
+            url2='https://api.parliament.uk/odata/Person(%27{}%27)/PersonHasIncumbency?$expand=IncumbencyHasPosition'.format(r2)
+            r3=requests.get(url2)
+            r4=r3.json()
+            for i in r4['value']:
+             try:
+                d = datetime.strptime(i['IncumbencyStartDate'], "%Y-%m-%dT%H:%M:%SZ")
+                datum = d.strftime("%d/%m/%Y")
+                tw = i['IncumbencyHasPosition']['PositionName'] + ", started:" + datum
+        
+             except TypeError:
+                pass
 
                                 #print('------')
                                 #api.update_status(repl + " " + tw + " " + tim)
-                            replyText = str("@"+screenName + " " + mem + " " + tw)
-                            print replyText
-                            try:
-                                api.update_status(status=replyText, in_reply_to_status_id = tweetId)
-                            except tweepy.TweepError as e:
-                                pass
-                elif ("#committees" in tweetText) and (not "#govposts" in tweetText):
-                    mcm=n[z]['MemberCommittees'].OpenCollection()
-                    for k in mcm.keys():
-                    #Get the Government Post details
-                        with mcm[k]['Committee'].OpenCollection() as mcmc:
-                            for k2,v2 in mcmc[mcmc.keys()[0]].data_items():
-                                if k2=='Name':
-                                #if k2=='HansardName' :
-                                    tw = str(v2.value)
-                                    print tw
-                                #print(v2.value)
-
-                                #print('------')
-                                #api.update_status(repl + " " + tw + " " + tim)
-                            replyText = str("@"+screenName + " " + mem + " " + tw)
+                            replyText = str("@"+screenName + " " + tw)
                             print replyText
                             try:
                                 api.update_status(status=replyText, in_reply_to_status_id = tweetId)
