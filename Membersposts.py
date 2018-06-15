@@ -126,10 +126,10 @@ class ReplyToTweet(StreamListener):
                                     #api.update_status(repl + " " + tw + " " + tim)
                     replyText = str("@"+screenName + " " + tw)
                     print replyText
-                        try:
-                            api.update_status(status=replyText, in_reply_to_status_id = tweetId)
-                        except tweepy.TweepError as e:
-                            pass
+                    try:
+                        api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+                    except tweepy.TweepError as e:
+                        pass
             else:
                 #tv = n[z]['DateOfWrit'].value
                 #tw = str(tv)
