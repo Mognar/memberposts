@@ -106,10 +106,10 @@ class ReplyToTweet(StreamListener):
 
         
             if ("#govposts" in tweetText) and (not "#committees" in tweetText):
+                url1='{}/odata/Person?$filter=endswith(PersonFamilyName,%27{}%27)%20and%20startswith(PersonGivenName,%27{}%27)'.format(stub,tr2,tr1)
                 r=requests.get(url1)
                 r1=r.json()
                 r2=r1['value'][0]['LocalId']
-                url1='{}/odata/Person?$filter=endswith(PersonFamilyName,%27{}%27)%20and%20startswith(PersonGivenName,%27{}%27)'.format(stub,tr2,tr1)
                 url2='https://api.parliament.uk/odata/Person(%27{}%27)/PersonHasIncumbency?$expand=IncumbencyHasPosition'.format(r2)
                 r3=requests.get(url2)
                 r4=r3.json()
