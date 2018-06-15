@@ -124,8 +124,8 @@ class ReplyToTweet(StreamListener):
 
                                     #print('------')
                                     #api.update_status(repl + " " + tw + " " + tim)
-                        replyText = str("@"+screenName + " " + tw)
-                        print replyText
+                    replyText = str("@"+screenName + " " + tw)
+                    print replyText
                         try:
                             api.update_status(status=replyText, in_reply_to_status_id = tweetId)
                         except tweepy.TweepError as e:
