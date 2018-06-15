@@ -61,7 +61,7 @@ class ReplyToTweet(StreamListener):
         tweet = json.loads(data.strip())
         
         retweeted = tweet.get('retweeted')
-        from_self = tweet.get('user',{}).get('id_str','') == 854276747096973313
+        from_self = tweet.get('user',{}).get('screen_name','parlibot')
         #tweetText = tweet.get('text')
         not_reply = tweet.get('in_reply_to_status_id_str')
         
