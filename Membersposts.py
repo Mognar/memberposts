@@ -39,7 +39,7 @@ api = tweepy.API(auth)
 class ReplyToTweet(StreamListener):
     #@app.route("/")
     def on_data(self, data):
-        print data
+        print(data)
         tweet = json.loads(data.strip())
         
         retweeted = tweet.get('retweeted')
@@ -53,33 +53,33 @@ class ReplyToTweet(StreamListener):
             tweetId = tweet.get('id_str')
             screenName = tweet.get('user',{}).get('screen_name')
             tweetText = tweet.get('text')
-            print tweetText 
+            print(tweetText) 
             
             if "#" in tweetText:
                 str2="#"
                 y = str(tweetText[10:])
-                print y
+                print(y)
                 z = y.rindex(str2)
-                print z
+                print(z)
                 tm = str(y[:z])
-                print tm
+                print(tm)
                 tr = tm.strip(' ')
                 words = tr.split()
-                print words
+                print(words)
                 firstname = words[0]
                 surname = words[1]
-                print firstname
-                print surname
+                print(firstname)
+                print(surname)
             else:
                 tm = str(tweetText[10:])
-                print tm
+                print(tm)
                 tr = tm.strip(' ')
                 words = tr.split()
-                print words
+                print(words)
                 firstname = words[0]
                 surname = words[1]
-                print firstname
-                print surname
+                print(firstname)
+                print(surname)
 
 
 # In[ ]:
@@ -119,7 +119,6 @@ if ("#govposts" in tweetText) and (not "#committees" in tweetText):
 
 
     result = pdpy.sparql_select(querycom)
-    result
 
 
     # In[85]:
@@ -136,8 +135,9 @@ if ("#govposts" in tweetText) and (not "#committees" in tweetText):
     # In[101]:
 
 
-    replyText = str("@"+screenName + " " + firstname + " " + surname +": Member of "+row["committeename"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
+    
     for index, row in result.iterrows():
+        replyText = str("@"+screenName + " " + firstname + " " + surname +": Member of "+row["committeename"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
         try:
             api.update_status(status=replyText, in_reply_to_status_id = tweetId)
         except tweepy.TweepError as e:
@@ -195,8 +195,9 @@ elif ("#committees" in tweetText) and (not "#govposts" in tweetText):
     # In[ ]:
 
 
-    replyText = str("@"+screenName + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
+    
     for index, row in result.iterrows():
+        replyText = str("@"+screenName + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
         try:
             api.update_status(status=replyText, in_reply_to_status_id = tweetId)
         except tweepy.TweepError as e:
