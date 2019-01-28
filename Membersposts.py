@@ -223,6 +223,6 @@ class ReplyToTweet(StreamListener):
 if __name__ == '__main__':
     streamListener = ReplyToTweet()
     stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
-     stream.filter(track=["@parlibot", "@Parlibot"])
+    stream.filter(track=["@parlibot", "@Parlibot"])
     #app.run()
 
