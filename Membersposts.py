@@ -189,14 +189,14 @@ class ReplyToTweet(StreamListener):
                 # In[ ]:
 
 
-                result = result.fillna('Present')
+                resultgov = resultgov.fillna('Present')
 
 
                 # In[ ]:
 
 
 
-                for index, row in result.iterrows():
+                for index, row in resultgov.iterrows():
                     replyText = str("@"+screenName + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
                     try:
                         api.update_status(status=replyText, in_reply_to_status_id = tweetId)
