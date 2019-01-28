@@ -193,7 +193,7 @@ class ReplyToTweet(StreamListener):
 
 
             for index, row in resultgov.iterrows():
-                replyText = str("@"+name + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
+                replyText = str("@"+name + " " + firstname + " " + surname +": "+row["positionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
                 try:
                     api.update_status(status=replyText, in_reply_to_status_id = id_str)
                 except tweepy.TweepError as e:
