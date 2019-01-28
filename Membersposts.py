@@ -40,9 +40,10 @@ print (user.name)
 class ReplyToTweet(StreamListener):
     #@app.route("/")
     def on_status(self, status):
-       tweet = status.text
-       id_str = status.id_str
-       name = status.user.screen_name
+        tweet = status.text
+        print(tweet)
+        id_str = status.id_str
+        name = status.user.screen_name
         
         
         
