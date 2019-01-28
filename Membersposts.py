@@ -131,7 +131,6 @@ result = result.fillna('Present')
 # In[97]:
 
 
-screenName = "gorman"
 
 
 # In[101]:
