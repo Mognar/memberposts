@@ -44,15 +44,7 @@ class ReplyToTweet(StreamListener):
         print(tweet)
         id_str = status.id_str
         name = status.user.screen_name
-        
-        
-        
-    def on_error(self, status_code):
-        if status_code == 420:
-            return False
-        
-        
-            
+
             if "#" in tweet:
                 str2="#"
                 y = str(tweet[10:])
@@ -214,7 +206,9 @@ class ReplyToTweet(StreamListener):
                     api.update_status(status=replyText, in_reply_to_status_id = id_str)
                 except tweepy.TweepError as e:
                     pass
-
+    def on_error(self, status_code):
+        if status_code == 420:
+            return False
 
 # In[ ]:
 
