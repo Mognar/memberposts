@@ -41,15 +41,15 @@ class ReplyToTweet(StreamListener):
     #@app.route("/")
     def on_status(self, status):
         if hasattr(status, 'retweeted_status'):
-			try:
-				tweet = status.retweeted_status.extended_tweet["full_text"]
-			except:
-				tweet = status.retweeted_status.text
-		else:
-			try:
-				tweet = status.extended_tweet["full_text"]
-			except AttributeError:
-				tweet = status.text
+		try:
+			tweet = status.retweeted_status.extended_tweet["full_text"]
+		except:
+			tweet = status.retweeted_status.text
+	else:
+		try:
+			tweet = status.extended_tweet["full_text"]
+		except AttributeError:
+			tweet = status.text
          id_str = status.id_str
          name = status.user.screen_name
         
