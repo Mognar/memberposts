@@ -222,7 +222,7 @@ class ReplyToTweet(StreamListener):
 
 if __name__ == '__main__':
     streamListener = ReplyToTweet()
-    stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
+    stream = tweepy.Stream(auth=api.auth, listener=streamListener)
     stream.filter(track=["@parlibot", "@Parlibot"])
     #app.run()
 
