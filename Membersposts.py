@@ -206,7 +206,7 @@ class ReplyToTweet(StreamListener):
         else:
             #tv = n[z]['DateOfWrit'].value
             #tw = str(tv)
-            replyText = str("@"+name + " I'll need a hashtag to tell you more about " + mem + " . #committees or #govposts")
+            replyText = str("@"+name + " I'll need a hashtag to tell you more about "+ firstname + " " + surname + ": #committees or #govposts")
             print(replyText)
             try:
                 api.update_status(status=replyText, in_reply_to_status_id = id_str)
