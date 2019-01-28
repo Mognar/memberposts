@@ -41,10 +41,11 @@ class ReplyToTweet(StreamListener):
     #@app.route("/")
     def on_status(self, status):
         if status.retweeted_status:
-            return
-        print(status.text)
-        id_str = status.id_str
-        name = status.user.screen_name
+            return False
+        else: 
+            print(status.text)
+            id_str = status.id_str
+            name = status.user.screen_name
         
         
         
