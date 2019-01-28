@@ -46,6 +46,8 @@ class ReplyToTweet(StreamListener):
         name = status.user.screen_name
 
         if "#" in tweet:
+            firstname = ""
+            surname = ""
             try:
                 str2="#"
                 y = str(tweet[10:])
@@ -65,6 +67,8 @@ class ReplyToTweet(StreamListener):
                 pass
                 
         else:
+            firstname = ""
+            surname = ""
             try:
                 tm = str(tweet[10:])
                 print(tm)
