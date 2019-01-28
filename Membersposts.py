@@ -91,57 +91,57 @@ if ("#govposts" in tweetText) and (not "#committees" in tweetText):
 # In[83]:
 
 
-querycom = """
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX : <https://id.parliament.uk/schema/>
-SELECT ?committeename ?startdate ?enddate WHERE {
-  ?member a :Member;
-     :personGivenName '"""+firstname+"""';
-     :personFamilyName '"""+surname+"""'.
+    querycom = """
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX : <https://id.parliament.uk/schema/>
+    SELECT ?committeename ?startdate ?enddate WHERE {
+      ?member a :Member;
+         :personGivenName '"""+firstname+"""';
+         :personFamilyName '"""+surname+"""'.
 
-  ?member
-  :personHasFormalBodyMembership ?formalBody .
+      ?member
+      :personHasFormalBodyMembership ?formalBody .
 
-  ?formalBody
-  :formalBodyMembershipHasFormalBody ?committee;
-  :formalBodyMembershipStartDate ?startdate . 
-  OPTIONAL { ?formalBody
-  :formalBodyMembershipEndDate ?enddate } .
+      ?formalBody
+      :formalBodyMembershipHasFormalBody ?committee;
+      :formalBodyMembershipStartDate ?startdate . 
+      OPTIONAL { ?formalBody
+      :formalBodyMembershipEndDate ?enddate } .
 
-  ?committee 
-  rdfs:label ?committeename .
-} 
-ORDER BY DESC(?startdate)
-"""
-
-
-# In[84]:
+      ?committee 
+      rdfs:label ?committeename .
+    } 
+    ORDER BY DESC(?startdate)
+    """
 
 
-result = pdpy.sparql_select(querycom)
-result
+    # In[84]:
 
 
-# In[85]:
+    result = pdpy.sparql_select(querycom)
+    result
 
 
-result = result.fillna('Present')
+    # In[85]:
 
 
-# In[97]:
+    result = result.fillna('Present')
+
+
+    # In[97]:
 
 
 
 
-# In[101]:
+    # In[101]:
 
 
-replyText = str("@"+screenName + " " + firstname + " " + surname +": Member of "+row["committeename"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
-for index, row in result.iterrows():
-    try:
-        api.update_status(status=replyText, in_reply_to_status_id = tweetId)
-    except tweepy.TweepError as e:
-        pass
+    replyText = str("@"+screenName + " " + firstname + " " + surname +": Member of "+row["committeename"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
+    for index, row in result.iterrows():
+        try:
+            api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+        except tweepy.TweepError as e:
+            pass
 
 
 # In[ ]:
@@ -153,54 +153,54 @@ elif ("#committees" in tweetText) and (not "#govposts" in tweetText):
 # In[93]:
 
 
-querygov = """
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX : <https://id.parliament.uk/schema/>
-SELECT DISTINCT ?positionName ?startdate ?enddate WHERE {
-  ?member a :Member;
-     :personGivenName '"""+firstname+"""';
-     :personFamilyName '"""+surname+"""'.
+    querygov = """
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX : <https://id.parliament.uk/schema/>
+    SELECT DISTINCT ?positionName ?startdate ?enddate WHERE {
+      ?member a :Member;
+         :personGivenName '"""+firstname+"""';
+         :personFamilyName '"""+surname+"""'.
 
-  ?member 
-    :memberHasParliamentaryIncumbency ?parlIncumbency
-    .  
+      ?member 
+        :memberHasParliamentaryIncumbency ?parlIncumbency
+        .  
 
-  ?member
-    :governmentPersonHasGovernmentIncumbency ?govIncumbency
-.
+      ?member
+        :governmentPersonHasGovernmentIncumbency ?govIncumbency
+    .
 
-  ?govIncumbency :governmentIncumbencyHasGovernmentPosition/:name ?positionName;
-  :incumbencyStartDate ?startdate . 
-  OPTIONAL { ?govIncumbency
-  :incumbencyEndDate ?enddate } .
+      ?govIncumbency :governmentIncumbencyHasGovernmentPosition/:name ?positionName;
+      :incumbencyStartDate ?startdate . 
+      OPTIONAL { ?govIncumbency
+      :incumbencyEndDate ?enddate } .
 
-} 
-ORDER BY DESC(?startdate)
-"""
-
-
-# In[94]:
+    } 
+    ORDER BY DESC(?startdate)
+    """
 
 
-resultgov = pdpy.sparql_select(querygov)
-resultgov
+    # In[94]:
 
 
-# In[ ]:
+    resultgov = pdpy.sparql_select(querygov)
+    resultgov
 
 
-result = result.fillna('Present')
+    # In[ ]:
 
 
-# In[ ]:
+    result = result.fillna('Present')
 
 
-replyText = str("@"+screenName + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
-for index, row in result.iterrows():
-    try:
-        api.update_status(status=replyText, in_reply_to_status_id = tweetId)
-    except tweepy.TweepError as e:
-        pass
+    # In[ ]:
+
+
+    replyText = str("@"+screenName + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
+    for index, row in result.iterrows():
+        try:
+            api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+        except tweepy.TweepError as e:
+            pass
 
 
 # In[ ]:
