@@ -46,30 +46,37 @@ class ReplyToTweet(StreamListener):
         name = status.user.screen_name
 
         if "#" in tweet:
-            str2="#"
-            y = str(tweet[10:])
-            print(y)
-            z = y.rindex(str2)
-            print(z)
-            tm = str(y[:z])
-            print(tm)
-            tr = tm.strip(' ')
-            words = tr.split()
-            print(words)
-            firstname = words[0]
-            surname = words[1]
-            print(firstname)
-            print(surname)
+            try:
+                str2="#"
+                y = str(tweet[10:])
+                print(y)
+                z = y.rindex(str2)
+                print(z)
+                tm = str(y[:z])
+                print(tm)
+                tr = tm.strip(' ')
+                words = tr.split()
+                print(words)
+                firstname = words[0]
+                surname = words[1]
+                print(firstname)
+                print(surname)
+            except IndexError as i:
+                pass
+                
         else:
-            tm = str(tweet[10:])
-            print(tm)
-            tr = tm.strip(' ')
-            words = tr.split()
-            print(words)
-            firstname = words[0]
-            surname = words[1]
-            print(firstname)
-            print(surname)
+            try:
+                tm = str(tweet[10:])
+                print(tm)
+                tr = tm.strip(' ')
+                words = tr.split()
+                print(words)
+                firstname = words[0]
+                surname = words[1]
+                print(firstname)
+                print(surname)
+            except IndexError as i:
+                pass
 
 
 # In[ ]:
