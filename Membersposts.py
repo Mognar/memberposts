@@ -75,12 +75,7 @@ class ReplyToTweet(StreamListener):
 # In[ ]:
 
 
-        if ("#govposts" in tweet) and (not "#committees" in tweet):
-
-
-        # In[83]:
-
-
+        if ("#committees" in tweet) and (not "#govposts" in tweet):
             querycom = """
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
             PREFIX : <https://id.parliament.uk/schema/>
@@ -109,7 +104,7 @@ class ReplyToTweet(StreamListener):
 
 
             result = pdpy.sparql_select(querycom)
-
+            print(result)
 
             # In[85]:
 
@@ -137,7 +132,7 @@ class ReplyToTweet(StreamListener):
         # In[ ]:
 
 
-        elif ("#committees" in tweet) and (not "#govposts" in tweet):
+        elif ("#govposts" in tweet) and (not "#committees" in tweet):
 
 
         # In[93]:
