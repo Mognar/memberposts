@@ -40,12 +40,18 @@ print (user.name)
 class ReplyToTweet(StreamListener):
     #@app.route("/")
     def on_status(self, status):
-        if status.retweeted_status:
-            return False
-        else: 
-            print(status.text)
-            id_str = status.id_str
-            name = status.user.screen_name
+        if hasattr(status, 'retweeted_status'):
+			try:
+				tweet = status.retweeted_status.extended_tweet["full_text"]
+			except:
+				tweet = status.retweeted_status.text
+		else:
+			try:
+				tweet = status.extended_tweet["full_text"]
+			except AttributeError:
+				tweet = status.text
+         id_str = status.id_str
+         name = status.user.screen_name
         
         
         
@@ -55,9 +61,9 @@ class ReplyToTweet(StreamListener):
         
         
             
-            if "#" in status.text:
+            if "#" in tweet:
                 str2="#"
-                y = str(tweetText[10:])
+                y = str(tweet[10:])
                 print(y)
                 z = y.rindex(str2)
                 print(z)
@@ -71,7 +77,7 @@ class ReplyToTweet(StreamListener):
                 print(firstname)
                 print(surname)
             else:
-                tm = str(tweetText[10:])
+                tm = str(tweet[10:])
                 print(tm)
                 tr = tm.strip(' ')
                 words = tr.split()
@@ -85,7 +91,7 @@ class ReplyToTweet(StreamListener):
 # In[ ]:
 
 
-            if ("#govposts" in status.text) and (not "#committees" in status.text):
+            if ("#govposts" in tweet) and (not "#committees" in tweet):
 
 
             # In[83]:
@@ -147,7 +153,7 @@ class ReplyToTweet(StreamListener):
             # In[ ]:
 
 
-            elif ("#committees" in status.text) and (not "#govposts" in status.text):
+            elif ("#committees" in tweet) and (not "#govposts" in tweet):
 
 
             # In[93]:
