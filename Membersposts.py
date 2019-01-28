@@ -39,24 +39,22 @@ print (user.name)
 
 class ReplyToTweet(StreamListener):
     #@app.route("/")
-    def on_data(self, data):
-        print(data)
-        tweet = json.loads(data.strip())
-        
-        retweeted = tweet.get('retweeted')
-        from_self = tweet.get('user',{}).get('id_str','') == 854276747096973313
-        #tweetText = tweet.get('text')
-        not_reply = tweet.get('in_reply_to_status_id_str')
+    def on_status(self, status):
+        if status.retweeted_status:
+            return
+        print(status.text)
+        id_str = status.id_str
+        name = status.user.screen_name
         
         
-        if retweeted is not None and not retweeted and not from_self and not_reply is None:
-            #tweet.text.encode('utf8')
-            tweetId = tweet.get('id_str')
-            screenName = tweet.get('user',{}).get('screen_name')
-            tweetText = tweet.get('text')
-            print(tweetText) 
+        
+    def on_error(self, status_code):
+        if status_code == 420:
+            return False
+        
+        
             
-            if "#" in tweetText:
+            if "#" in status.text:
                 str2="#"
                 y = str(tweetText[10:])
                 print(y)
@@ -86,7 +84,7 @@ class ReplyToTweet(StreamListener):
 # In[ ]:
 
 
-            if ("#govposts" in tweetText) and (not "#committees" in tweetText):
+            if ("#govposts" in status.text) and (not "#committees" in status.text):
 
 
             # In[83]:
@@ -138,9 +136,9 @@ class ReplyToTweet(StreamListener):
 
 
                 for index, row in result.iterrows():
-                    replyText = str("@"+screenName + " " + firstname + " " + surname +": Member of "+row["committeename"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
+                    replyText = str("@"+name + " " + firstname + " " + surname +": Member of "+row["committeename"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
                     try:
-                        api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+                        api.update_status(status=replyText, in_reply_to_status_id = id_str)
                     except tweepy.TweepError as e:
                         pass
 
@@ -148,7 +146,7 @@ class ReplyToTweet(StreamListener):
             # In[ ]:
 
 
-            elif ("#committees" in tweetText) and (not "#govposts" in tweetText):
+            elif ("#committees" in status.text) and (not "#govposts" in status.text):
 
 
             # In[93]:
@@ -198,9 +196,9 @@ class ReplyToTweet(StreamListener):
 
 
                 for index, row in resultgov.iterrows():
-                    replyText = str("@"+screenName + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
+                    replyText = str("@"+name + " " + firstname + " " + surname +": "+row["postitionName"]+" from "+str(row["startdate"])+" to "+str(row["enddate"]))
                     try:
-                        api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+                        api.update_status(status=replyText, in_reply_to_status_id = id_str)
                     except tweepy.TweepError as e:
                         pass
 
@@ -211,10 +209,10 @@ class ReplyToTweet(StreamListener):
             else:
                 #tv = n[z]['DateOfWrit'].value
                 #tw = str(tv)
-                replyText = str("@"+screenName + " I'll need a hashtag to tell you more about " + mem + " . #committees or #govposts")
+                replyText = str("@"+name + " I'll need a hashtag to tell you more about " + mem + " . #committees or #govposts")
                 print(replyText)
                 try:
-                    api.update_status(status=replyText, in_reply_to_status_id = tweetId)
+                    api.update_status(status=replyText, in_reply_to_status_id = id_str)
                 except tweepy.TweepError as e:
                     pass
 
@@ -224,7 +222,7 @@ class ReplyToTweet(StreamListener):
 
 if __name__ == '__main__':
     streamListener = ReplyToTweet()
-    twitterStream = Stream(auth, streamListener)
-    twitterStream.userstream(_with='user')
+    stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
+     stream.filter(track=["@parlibot", "@Parlibot"])
     #app.run()
 
